@@ -6,6 +6,7 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QComboBox>
+#include <QCheckBox>
 #include <QLabel>
 #include <QPushButton>
 #include <QDir>
@@ -15,40 +16,33 @@
 #include <QTextStream>
 #include <QIODevice>
 
-#include "SudokuTable.h"
+#include "TableWidgetSudoku.h"
 #include "WidgetLegendLines.h"
-#include "DigitRecognizer.h"
+//#include "SudokuReader.h"
 
-#include "opencv2/highgui.hpp"
-#include "opencv2/core.hpp"
-#include "opencv2/imgproc.hpp"
-#include "opencv2/imgcodecs.hpp"
-//#include "opencv2/features2d.hpp"
-#include "opencv2/calib3d.hpp"
-
-class SudokuWindow : public QWidget
+class MainWindowSudoku : public QWidget
 {
     Q_OBJECT
 private:
     QPushButton* pushButtonSolve, *pushButtonLoad, *pushButtonSlowSolve, *pushButtonPauseSolve;
+    QCheckBox* checkboxShowLegend;
     QComboBox* comboBoxFileSelect;
     QLabel* labelFileLabel, *labelPuzzleNo;
     QSpinBox* spinBoxPuzzleNo;
     QGridLayout* gLayoutMain;
-    QHBoxLayout* hLayoutLoad;
-    QVBoxLayout* vLayoutMain;
+    //QHBoxLayout* hLayoutLoad;
+    //QVBoxLayout* vLayoutMain;
     QDir sourceDir;
 
-    SudokuTable *sudokuTable;
-    DigitRecognizer digReader;
+    TableWidgetSudoku *sudokuTable;
+    //SudokuImageReader sReader;
 
     QWidget* windowLegend;
 
     void Create_Legend_Window();
-    void MyTransform(std::vector<cv::Point2f>& inputPts, std::vector<cv::Point2f>& outputPts, cv::Mat& M);
 
 public:
-    SudokuWindow(QWidget* _parent = 0);
+    MainWindowSudoku(QWidget* _parent = 0);
 
 signals:
     void Send_Pause(void);

@@ -1,88 +1,58 @@
-#include "SudokuWindow.h"
+#include "SudokuReader.h"
 
-SudokuWindow::SudokuWindow(QWidget* _parent)
-{    
-//    this->setParent(_parent);
-//    this->setWindowTitle("Sudoku");
-//    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-//    this->setMinimumSize(100, 100);
-
-//    labelFileLabel = new QLabel("File:");
-//    pushButtonLoad = new QPushButton("Load", this);
-
-//    comboBoxFileSelect = new QComboBox(this);
-//    comboBoxFileSelect->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-//    comboBoxFileSelect->setEditable(false);
-
-    sourceDir = QDir("C:/Users/m/Desktop/sudoku_test");
-//    QStringList puzzleFiles = sourceDir.entryList(QStringList("*.sudoku"));
-//    for (const QString& file : puzzleFiles)
-//        comboBoxFileSelect->addItem(file);
-
-//    labelPuzzleNo = new QLabel("Puzzle#:",this);
-//    labelPuzzleNo->setDisabled(true);
-//    labelPuzzleNo->show();
-
-//    spinBoxPuzzleNo = new QSpinBox(this);
-//    spinBoxPuzzleNo->setDisabled(true);
-//    spinBoxPuzzleNo->setMinimum(1);
-//    spinBoxPuzzleNo->setValue(1);
-//    spinBoxPuzzleNo->show();
+SudokuReader::SudokuReader()
+{
+}
 
 
-//    sudokuTable = new SudokuTable(9, 9, this);
+bool SudokuReader::Read_Board_File(SudokuBoard& inBoard, const std::string& fileName, uint16_t puzzleNo)
+{
+    char lnTxt[50];  //don't think I actually use this... at least should read the full line then iterate over characters there instead of reading file chars 1 by 1?
+    std::string lnStr;
+    std::ifstream ifStream(fileName.c_str());
+    if (!ifStream.is_open())     //whoops!
+        return false;
 
-//    pushButtonSolve = new QPushButton("Solve", this);
-//    pushButtonSlowSolve = new QPushButton("Slow Solve", this);
-//    pushButtonPauseSolve = new QPushButton("pause", this);
-//    pushButtonPauseSolve->hide();
+    for (uint16_t pNo=0; pNo<puzzleNo; ++pNo)
+    {
+        std::getline(ifStream,lnStr,'\n');  //title
+        for (uint16_t rowNo=0; rowNo<9; ++rowNo)  std::getline(ifStream,lnStr,'\n');  //puzzle rows
+    }
 
-//    this->setMinimumWidth(550);
-//    this->setMinimumHeight(608);
-//    //this->setMaximumWidth(570);
-//    //this->setMaximumHeight(640);
+    //this is some really old school method of reading a text file. Not very good practice
+    ifStream.getline(lnTxt, 10);                                  //I believe this throws out the header/title row
+    for (uint16_t rowNo=0; rowNo<9; ++rowNo)
+    {
+        for (uint16_t colNo=0; colNo<9; ++colNo)
+            inBoard(rowNo,colNo) = Read_File_Character(ifStream.get());  //convert char to number. Store file data in input board  ### this setting format okay?
 
-//    gLayoutMain = new QGridLayout();
-//    //gLayoutMain->setSizeConstraint(QLayout::SetMinimumSize);
-//    //gLayoutMain->setSizeConstraint(QLayout::SetNoConstraint);
-//    gLayoutMain->addWidget(labelFileLabel, 0, 0, 1, 1, Qt::AlignRight);
-//    gLayoutMain->addWidget(comboBoxFileSelect, 0, 1, 1, 4, Qt::AlignLeft);
-//    gLayoutMain->addWidget(labelPuzzleNo, 0, 5, 1, 1, Qt::AlignRight);
-//    gLayoutMain->addWidget(spinBoxPuzzleNo, 0, 6, 1, 1, Qt::AlignLeft);
-//    gLayoutMain->addWidget(pushButtonLoad, 0, 7, 1, 1, Qt::AlignRight);
-//    gLayoutMain->addWidget(sudokuTable, 1, 0, 5, 8);
-//    gLayoutMain->addWidget(pushButtonSolve, 6, 3, 1, 1, Qt::AlignHCenter);
-//    gLayoutMain->addWidget(pushButtonSlowSolve, 6, 4, 1, 1, Qt::AlignHCenter);
-//    gLayoutMain->addWidget(pushButtonPauseSolve, 6, 5, 1, 1, Qt::AlignHCenter);
+        ifStream.get();                                                       //throws away newline char...
+    }
+    return true;
+}
 
-//    gLayoutMain->setContentsMargins(4,4,4,4);
+uint16_t SudokuReader::Read_File_Character(char cVal)
+{
+    return cVal-48;  //convert from char to int (ascii stuff)
+}
 
-//    setLayout(gLayoutMain);
 
-//    connect( pushButtonLoad, SIGNAL(clicked(bool)), this, SLOT(Read_Sudoku_Board()) );  //need to pass string but too dumb to do properly :(
-//    connect( pushButtonSolve, SIGNAL(clicked(bool)), sudokuTable, SLOT(Solve_Board()) );
-//    connect( comboBoxFileSelect, SIGNAL(activated(QString)), this, SLOT(Update_Display_Puzzle_Number(QString)));
+bool SudokuReader::Read_Board_Image(SudokuBoard& inBoard, cv::Mat rawBoardImg)
+{
+    //sourceDir.path().toStdString()+"/read_board_test.jpg"
+    //cv::imread(sourceDir.path().toStdString()+"/read_board_test.jpg", CV_LOAD_IMAGE_GRAYSCALE);
 
-//    connect( pushButtonSlowSolve, SIGNAL(clicked(bool)), this, SLOT(Slow_Solve()) );
-//    connect( pushButtonPauseSolve, SIGNAL(clicked(bool)), this, SLOT(Pause_Solve()) );
-//    connect( this, SIGNAL(Send_Pause()), sudokuTable, SLOT(Pause_Solve()) );
-//    connect( this, SIGNAL(Send_Slow_Solve()), sudokuTable, SLOT(Slow_Solve()) );
-//    connect( sudokuTable, SIGNAL(Solve_Done()), this, SLOT(Solve_Done()) );
+    if (rawBoardImg.channels() != 1)
+        cv::cvtColor(rawBoardImg, rawBoardImg, cv::ColorConversionCodes::COLOR_BGR2GRAY);
 
-//    comboBoxFileSelect->setCurrentIndex(1);
-//    emit( comboBoxFileSelect->activated( comboBoxFileSelect->currentText()) );
-
-//    Read_Sudoku_Board();
-
-    cv::Mat rawMat = cv::imread(sourceDir.path().toStdString()+"/read_board_test.jpg", CV_LOAD_IMAGE_GRAYSCALE);
-    cv::Size rawSize = cv::Size(rawMat.cols, rawMat.rows);
+    cv::Size rawSize = cv::Size(rawBoardImg.cols, rawBoardImg.rows);
     std::cout << "image size: " << rawSize << std::endl;
-    int dim = std::sqrt(rawMat.cols*rawMat.cols + rawMat.rows*rawMat.rows);
+    int dim = std::sqrt(rawBoardImg.cols*rawBoardImg.cols + rawBoardImg.rows*rawBoardImg.rows);
 
     double scl = 1500.0/dim;  //want around x pixels for board diagonal? like 1200x900 ish
     std::cout << "rescale factor: " << scl << std::endl;
     cv::Mat sclMat;
-    cv::resize(rawMat, sclMat, cv::Size(), scl, scl );
+    cv::resize(rawBoardImg, sclMat, cv::Size(), scl, scl );
 
     //int dimBgSigma = dim/50;
     //dimBgSize += dimBgSize%2+1;  //make sure it's odd - size for blur must be odd
@@ -257,7 +227,7 @@ SudokuWindow::SudokuWindow(QWidget* _parent)
     cv::imshow("contours", contourMat);
     cv::waitKey(0);
 
-    digReader.Train_Recognizer("", "");  //this might take some time I'd assume?
+    digitReader.Train_Recognizer("", "");  //this might take some time I'd assume?
 
     //size_t testRow=0, testCol=2;
     for (size_t testRow=0; testRow<9; ++testRow)
@@ -277,123 +247,11 @@ SudokuWindow::SudokuWindow(QWidget* _parent)
             //testDetectMat *= sclToMax;
 
             testDetectMat.convertTo(testDetectFloat, CV_32FC1);
-            std::cout << "test (" << testRow << "," << testCol << ")   " << digReader.Classify_Image( testDetectFloat.reshape(1,1) ) << std::endl;
+            std::cout << "test (" << testRow << "," << testCol << ")   " << digitReader.Classify_Image( testDetectFloat.reshape(1,1) ) << std::endl;
             cv::imshow("test detect image", testDetectMat);
             cv::waitKey(500);
         }
     }
 
-    //digReader.train()
-    //Create_Legend_Window();
-}
-
-void SudokuWindow::MyTransform(std::vector<cv::Point2f>& inputPts, std::vector<cv::Point2f>& outputPts, cv::Mat& M)
-{
-//    outputPts.resize(inputPts.size() );
-//    for (size_t idx=0; idx<inputPts.size(); ++idx)
-//    {
-//        outputPts[idx] = cv::Point2f(inputPts[idx].x * M.at)
-//    }
-}
-
-
-
-
-
-
-
-
-
-
-void SudokuWindow::Read_Sudoku_Board()
-{
-    sudokuTable->Read_Board(sourceDir.path().toStdString()+"/"+comboBoxFileSelect->currentText().toStdString(), spinBoxPuzzleNo->value()-1);
-}
-
-void SudokuWindow::Update_Display_Puzzle_Number(QString fileName)
-{
-    QFile tempFile(QString(sourceDir.path()+"/"+fileName));
-    tempFile.open(QIODevice::ReadOnly | QIODevice::Text);
-    QTextStream txtStream(&tempFile);
-    int lineCount = 0;
-
-    while( !txtStream.atEnd())
-    {
-        QString garbage = txtStream.readLine();
-        ++lineCount;
-    }
-    tempFile.close();
-
-    if (lineCount < 20)
-    {
-        spinBoxPuzzleNo->setEnabled(false);
-        labelPuzzleNo->setEnabled(false);
-        spinBoxPuzzleNo->setValue(1);
-    }
-    else
-    {
-        spinBoxPuzzleNo->setEnabled(true);
-        labelPuzzleNo->setEnabled(true);
-        spinBoxPuzzleNo->setMaximum(lineCount/10);
-    }
-}
-
-void SudokuWindow::Create_Legend_Window(void)
-{
-    windowLegend = new QWidget();
-
-    QGridLayout* gLayoutLegend = new QGridLayout();
-    windowLegend->setLayout(gLayoutLegend);
-    windowLegend->setWindowTitle("Solution Legend");
-
-    //QWidget* widgetLegendLines = new QWidget(windowLegend);
-    WidgetLegendLines* widgetLegendLines = new WidgetLegendLines(this);
-
-    QLabel* labelLegendLabel1 = new QLabel("Last Number Possible in Cell",windowLegend);
-    QLabel* labelLegendLabel2 = new QLabel("Need Every Number in Row",windowLegend);
-    QLabel* labelLegendLabel3 = new QLabel("Need Every Number in Column",windowLegend);
-    QLabel* labelLegendLabel4 = new QLabel("Need Every Number in Block",windowLegend);
-
-    gLayoutLegend->addWidget(widgetLegendLines,0,0,4,1);
-    gLayoutLegend->addWidget(labelLegendLabel1,0,1,1,1);
-    gLayoutLegend->addWidget(labelLegendLabel2,1,1,1,1);
-    gLayoutLegend->addWidget(labelLegendLabel3,2,1,1,1);
-    gLayoutLegend->addWidget(labelLegendLabel4,3,1,1,1);
-    gLayoutLegend->setColumnMinimumWidth(0,30);
-    //gLayoutLegend->setHorizontalSpacing(5);
-    //gLayoutLegend->setRowStretch();
-
-//    QPainter painterLegend(widgetLegendLines);
-
-//    painterLegend.setPen(QPen(sudokuTable->methodColors[1], 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-////    QBrush brushLegend(sudokuTable->methodColors[1]);
-////    painterLegend.setBrush(brushLegend);
-//    painterLegend.drawLine(5,5,25,5);
-//    painterLegend.drawLine(5,55,25,55);
-//    painterLegend.drawLine(5,105,25,105);
-//    painterLegend.drawLine(5,155,25,155);
-
-    windowLegend->show();
-}
-
-void SudokuWindow::Pause_Solve(void)
-{
-    if (pushButtonPauseSolve->text() == "pause" )
-        pushButtonPauseSolve->setText("unpause");
-    else
-        pushButtonPauseSolve->setText("pause");
-
-    emit( Send_Pause() );
-}
-
-void SudokuWindow::Slow_Solve()
-{
-    pushButtonPauseSolve->show();
-    pushButtonPauseSolve->setText("pause");
-    emit( Send_Slow_Solve() );
-}
-
-void SudokuWindow::Solve_Done(void)
-{
-    pushButtonPauseSolve->hide();
+    return true;
 }

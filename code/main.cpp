@@ -1,10 +1,10 @@
-#include "SudokuWindow.h"
+#include "MainWindowSudoku.h"
 
 #include <QApplication>
 
 int main(int argc, char** argv) {
     QApplication app(argc, argv);
-    SudokuWindow sWindow;
+    MainWindowSudoku sWindow;
     sWindow.show();
     return app.exec();
 }

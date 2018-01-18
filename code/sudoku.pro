@@ -4,22 +4,27 @@ QMAKE_CXXFLAGS +=   -Wno-reorder
 
 TARGET = sudoku
 
-HEADERS +=  SudokuBoard.h \
-            SudokuWindow.h \
+HEADERS +=  \
             DrawBorderDelegate.h \
-            SudokuTable.h \
             WidgetLegendLines.h \
             ColorMaps.h \
-            DigitRecognizer.h
+            DigitRecognizer.h \
+            TableWidgetSudoku.h \
+    MainWindowSudoku.h \
+    SudokuSolver.h \
+    SudokuBoard.h \
+    SudokuReader.h
 
 SOURCES +=  main.cpp \
-            SudokuBoard.cpp \
-            SudokuWindow.cpp \
             DrawBorderDelegate.cpp \
-            SudokuTable.cpp \
             WidgetLegendLines.cpp \
             ColorMaps.cpp \
-            DigitRecognizer.cpp
+            DigitRecognizer.cpp \
+            TableWidgetSudoku.cpp \
+    MainWindowSudoku.cpp \
+    SudokuSolver.cpp \
+    SudokuBoard.cpp \
+    SudokuReader.cpp
 
 INCLUDEPATH += "C:/Users/m/Box Sync/Sickle Cell Work - Shared/Red Blood Cell Tracking/Code/Qt/common/build/include"
 

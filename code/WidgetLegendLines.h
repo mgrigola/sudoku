@@ -10,7 +10,7 @@
 #include <QLinearGradient>
 #include <QPalette>
 
-#include "SudokuTable.h"
+#include "TableWidgetSudoku.h"
 
 class WidgetLegendLines : public QWidget
 {

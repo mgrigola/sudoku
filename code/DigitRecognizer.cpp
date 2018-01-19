@@ -38,7 +38,7 @@ uint32_t DigitRecognizer::readFlippedInteger(FILE *fp)
 //we need to assemble tr
 bool DigitRecognizer::Train_Recognizer(const std::string& trainPath, const std::string& labelsPath)
 {
-    std::string trPath = "C:/Users/m/Desktop/sudoku_test/digits.png";
+    std::string trPath = "../data/digits.png";
     std::vector<size_t> testImgNos;
 
     cv::Mat digitsPng;          //input image/data/mat. one I'm using is a regular png picture. Often data sets use some custom binary format that would need reformatting

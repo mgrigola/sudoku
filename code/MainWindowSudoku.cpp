@@ -1,6 +1,7 @@
 #include "MainWindowSudoku.h"
 
-MainWindowSudoku::MainWindowSudoku(QWidget* _parent)
+MainWindowSudoku::MainWindowSudoku(QWidget* _parent) :
+    windowLegend(nullptr)
 {    
     this->setParent(_parent);
     this->setWindowTitle("Sudoku");
@@ -14,7 +15,7 @@ MainWindowSudoku::MainWindowSudoku(QWidget* _parent)
     comboBoxFileSelect->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     comboBoxFileSelect->setEditable(false);
 
-    sourceDir = QDir("C:/Users/m/Desktop/sudoku_test");
+    sourceDir = QDir("../data");
     QStringList puzzleFiles = sourceDir.entryList(QStringList("*.sudoku"));
     for (const QString& file : puzzleFiles)
         comboBoxFileSelect->addItem(file);
@@ -70,12 +71,12 @@ MainWindowSudoku::MainWindowSudoku(QWidget* _parent)
     connect( this, SIGNAL(Send_Pause()), sudokuTable, SLOT(Pause_Solve()) );
     connect( this, SIGNAL(Send_Slow_Solve()), sudokuTable, SLOT(Slow_Solve()) );
     connect( sudokuTable, SIGNAL(Solve_Done()), this, SLOT(Solve_Done()) );
+    connect( checkboxShowLegend, SIGNAL(toggled(bool)), this, SLOT(Toggle_Checkbox_Show_Legend(bool)) );
 
     comboBoxFileSelect->setCurrentIndex(1);
     emit( comboBoxFileSelect->activated( comboBoxFileSelect->currentText()) );
 
     Read_Sudoku_Board();
-    //Create_Legend_Window();
 }
 
 
@@ -113,6 +114,16 @@ void MainWindowSudoku::Update_Display_Puzzle_Number(QString fileName)
         labelPuzzleNo->setEnabled(true);
         spinBoxPuzzleNo->setMaximum(lineCount/10);
     }
+}
+
+void MainWindowSudoku::Toggle_Checkbox_Show_Legend(bool isChecked)
+{
+    if (windowLegend == nullptr)
+        Create_Legend_Window();
+    else if (isChecked)
+        windowLegend->show();
+    else
+        windowLegend->hide();
 }
 
 //just a sample new window, playng with how to make Qt things

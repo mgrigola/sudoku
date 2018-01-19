@@ -38,8 +38,7 @@ private:
     //SudokuImageReader sReader;
 
     QWidget* windowLegend;
-
-    void Create_Legend_Window();
+    void Create_Legend_Window(void);
 
 public:
     MainWindowSudoku(QWidget* _parent = 0);
@@ -54,6 +53,7 @@ private slots:
     void Pause_Solve(void);
     void Slow_Solve(void);
     void Solve_Done(void);
+    void Toggle_Checkbox_Show_Legend(bool isChecked);
 };
 
 #endif

@@ -7,21 +7,22 @@ See the /data folder for inputs. It reads the .sudoku files (see examples for fo
 Also does (not quite yet) OCR given an image of a sudoku puzzle, identifies the board and reads in the numbers.
 
 
-to compile code: see code/sudoku.pro
-would need to change LIBS and INCLUDEPATH to location of opencv/include and /libs on local machine
-
 I'm using:
 Qt 5.7.1
 Qt Creator 4.2.1
 mingw 5.3
 OpenCV 3.1.0 - this definitely isn't compatible with opencv2.X due to the ml stuff
 
+
 To get this running on a new machine:
   Install the stuff above
-  Clone opencv3  and compile with mingw (comes with Qt Creator). Need CMake, too/first.
+	
+  Clone opencv3 and make with CMake. use mingw for compiler (comes with Qt Creator)
+	
   Change code/sudoku.pro:
     LIBS += <location of .dll.a files for opencv>
     INCLUDEPATH += <location of opencv's build/include directory> (include should contain opencv2, and opencv2 contains the .hpp's)
+														 
   by default should save compile output to sudoku/compile/<release|debug>. I think? unless that's in the .user file
   if stuff isn't loading right, make sure /data files are there. I have hard-coded "../data/<puzzle files>" as the path to load. So like         running the executable from /compile/release, you'd need to copy /data into /compile
     

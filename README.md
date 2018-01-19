@@ -1,10 +1,11 @@
 # sudoku
-reads and solves sudoku puzzles for fun and learning
+reads and interactively solves sudoku puzzles for fun and learning (with opencv + Qt)
 
-the solver works like a human, eliminating options and drawing logical conclusions.
-the board is interactive - can use to try and solve puzzle yourself. Hitting the solve button will find solution + show errors and show the solution logic to some degree.
-see the /data folder for inputs. reads the .sudoku files in the example format (text, 1 row title 9x9 grid where 0's are blank, can put multiple puzzles in one file)
-also does (not quite yet) OCR given an image of a sudoku puzzle, identifies the board and reads in the numbers.
+The solver works like a human, eliminating options and drawing logical conclusions.
+The board is interactive - can use to try and solve puzzle yourself. Hitting the solve button will find solution + show errors and show the solution logic to some degree.
+See the /data folder for inputs. It reads the .sudoku files (see examples for format: text, 1 row title, 9x9 grid where 0's are blank, can put multiple puzzles in one file)
+Also does (not quite yet) OCR given an image of a sudoku puzzle, identifies the board and reads in the numbers.
+
 
 to compile code: see code/sudoku.pro
 would need to change LIBS and INCLUDEPATH to location of opencv/include and /libs on local machine
@@ -14,3 +15,13 @@ Qt 5.7.1
 Qt Creator 4.2.1
 mingw 5.3
 OpenCV 3.1.0 - this definitely isn't compatible with opencv2.X due to the ml stuff
+
+To get this running on a new machine:
+  Install the stuff above
+  Clone opencv3  and compile with mingw (comes with Qt Creator). Need CMake, too/first.
+  Change code/sudoku.pro:
+    LIBS += <location of .dll.a files for opencv>
+    INCLUDEPATH += <location of opencv's build/include directory> (include should contain opencv2, and opencv2 contains the .hpp's)
+  by default should save compile output to sudoku/compile/<release|debug>. I think? unless that's in the .user file
+  if stuff isn't loading right, make sure /data files are there. I have hard-coded "../data/<puzzle files>" as the path to load. So like         running the executable from /compile/release, you'd need to copy /data into /compile
+    

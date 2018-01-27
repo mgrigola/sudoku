@@ -10,10 +10,10 @@ HEADERS +=  \
             ColorMaps.h \
             DigitRecognizer.h \
             TableWidgetSudoku.h \
-    MainWindowSudoku.h \
-    SudokuSolver.h \
-    SudokuBoard.h \
-    SudokuReader.h
+            MainWindowSudoku.h \
+            SudokuSolver.h \
+            SudokuBoard.h \
+            SudokuReader.h
 
 SOURCES +=  main.cpp \
             DrawBorderDelegate.cpp \
@@ -21,10 +21,10 @@ SOURCES +=  main.cpp \
             ColorMaps.cpp \
             DigitRecognizer.cpp \
             TableWidgetSudoku.cpp \
-    MainWindowSudoku.cpp \
-    SudokuSolver.cpp \
-    SudokuBoard.cpp \
-    SudokuReader.cpp
+            MainWindowSudoku.cpp \
+            SudokuSolver.cpp \
+            SudokuBoard.cpp \
+            SudokuReader.cpp
 
 INCLUDEPATH += "C:/Users/m/Box Sync/Sickle Cell Work - Shared/Red Blood Cell Tracking/Code/Qt/common/build/include"
 

@@ -49,7 +49,21 @@ void TableWidgetSudoku::Read_Board_File(const std::string& fileName, uint16_t pu
 {
     Clear_Table();
     sReader.Read_Board_File(inputBoard, fileName, puzzleNo);
+    Display_Input_Board();
+}
 
+//this one does the image recognition
+//###actually maybe mainwindow should call the read functions and *this should just have like a Set_Input_Board(const SudokuBoard& inBoard)
+void TableWidgetSudoku::Read_Board_Image(const std::string& fileName)
+{
+    Clear_Table();
+    sReader.Read_Board_Image(inputBoard, fileName);
+    Display_Input_Board();
+}
+
+
+void TableWidgetSudoku::Display_Input_Board(void)
+{
     uint16_t v;
     for (uint16_t rowNo=0; rowNo<nRows; ++rowNo)
     {

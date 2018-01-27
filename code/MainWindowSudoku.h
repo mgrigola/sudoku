@@ -24,10 +24,10 @@ class MainWindowSudoku : public QWidget
 {
     Q_OBJECT
 private:
-    QPushButton* pushButtonSolve, *pushButtonLoad, *pushButtonSlowSolve, *pushButtonPauseSolve;
+    QPushButton* pushButtonSolve, *pushButtonLoadFile, *pushButtonLoadImage, *pushButtonSlowSolve, *pushButtonPauseSolve;
     QCheckBox* checkboxShowLegend;
-    QComboBox* comboBoxFileSelect;
-    QLabel* labelFileLabel, *labelPuzzleNo;
+    QComboBox* comboBoxFileSelect, *comboBoxImageSelect;
+    QLabel* labelFileSelect, *labelImageSelect, *labelPuzzleNo;
     QSpinBox* spinBoxPuzzleNo;
     QGridLayout* gLayoutMain;
     //QHBoxLayout* hLayoutLoad;
@@ -49,7 +49,8 @@ signals:
     void Send_Slow_Solve(void);
 
 private slots:
-    void Read_Sudoku_Board(void);
+    void Read_Sudoku_Board_File(void);
+    void Read_Sudoku_Board_Image(void);
     void Update_Display_Puzzle_Number(QString fileName);
     void Pause_Solve(void);
     void Slow_Solve(void);

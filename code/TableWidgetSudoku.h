@@ -52,6 +52,8 @@ private:
     QTimer* solveTimer;
     uint16_t solveStep;
 
+    void Display_Input_Board(void);
+
 public:
    TableWidgetSudoku(uint16_t _nRows = 9, uint16_t _nCols = 9, QWidget* _parent = 0);
 
@@ -60,6 +62,7 @@ signals:
 
 public slots:
     void Read_Board_File(const std::string& fileName, uint16_t puzzleNo=0);
+    void Read_Board_Image(const std::string& fileName);
     void Solve_Board(void);
     void Clear_Table(void);
     void Slow_Solve(void);

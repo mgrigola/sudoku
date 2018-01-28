@@ -179,7 +179,7 @@ bool SudokuSolver::Update_Board(uint16_t val, uint16_t row, uint16_t col, DISCOV
         val -= 1;
 
     //don't think this is a problem but ###debug just incase
-    if (val < 0)
+    if (val > 9)  //actually checking <0, but would overflow to 2^16-1
     {
         std::cout << "ERROR?: Assigning 0?" << std::endl;
         return false;

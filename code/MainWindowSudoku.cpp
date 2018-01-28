@@ -6,16 +6,31 @@ MainWindowSudoku::MainWindowSudoku(QWidget* _parent) :
     this->setParent(_parent);
     this->setWindowTitle("Sudoku");
     this->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum); //this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    this->setMinimumSize(100, 100);
+    this->setMinimumSize(550,608);  //still can't figure out how to make the window stick to the
+    sourceDir = QDir("../data");
 
-    labelFileLabel = new QLabel("File:");
-    pushButtonLoad = new QPushButton("Load", this);
+    labelImageSelect = new QLabel("Image:");
+
+    comboBoxImageSelect = new QComboBox(this);
+    comboBoxImageSelect->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    comboBoxImageSelect->setEditable(false);
+    QStringList puzzleImages = sourceDir.entryList(QStringList("*.jpg"));
+    for (const QString& file : puzzleImages)
+        comboBoxImageSelect->addItem(file);
+
+    pushButtonLoadImage = new QPushButton("Load Image", this);
+
+
+    labelFileSelect = new QLabel("File:");
 
     comboBoxFileSelect = new QComboBox(this);
     comboBoxFileSelect->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     comboBoxFileSelect->setEditable(false);
+<<<<<<< HEAD
 
     sourceDir = QDir("../data");
+=======
+>>>>>>> origin/master
     QStringList puzzleFiles = sourceDir.entryList(QStringList("*.sudoku"));
     for (const QString& file : puzzleFiles)
         comboBoxFileSelect->addItem(file);
@@ -30,6 +45,9 @@ MainWindowSudoku::MainWindowSudoku(QWidget* _parent) :
     spinBoxPuzzleNo->setValue(1);
     spinBoxPuzzleNo->show();
 
+    pushButtonLoadFile = new QPushButton("Load File", this);
+
+
     sudokuTable = new TableWidgetSudoku(9, 9, this);
 
     pushButtonSolve = new QPushButton("Solve", this);
@@ -37,32 +55,35 @@ MainWindowSudoku::MainWindowSudoku(QWidget* _parent) :
     pushButtonPauseSolve = new QPushButton("pause", this);
     pushButtonPauseSolve->hide();
     checkboxShowLegend = new QCheckBox("Show Legend", this);
-    //checkboxShowLegend->show();
-
-
-    //still can't figure out how to make the window stick to the
-    this->setMinimumWidth(550);
-    this->setMinimumHeight(608);
+    //checkboxShowLegend->show();    
 
     gLayoutMain = new QGridLayout();
     //gLayoutMain->setSizeConstraint(QLayout::SetMinimumSize);
     //gLayoutMain->setSizeConstraint(QLayout::SetNoConstraint);
-    gLayoutMain->addWidget(labelFileLabel, 0, 0, 1, 1, Qt::AlignRight);
-    gLayoutMain->addWidget(comboBoxFileSelect, 0, 1, 1, 4, Qt::AlignLeft);
-    gLayoutMain->addWidget(labelPuzzleNo, 0, 5, 1, 1, Qt::AlignRight);
-    gLayoutMain->addWidget(spinBoxPuzzleNo, 0, 6, 1, 1, Qt::AlignLeft);
-    gLayoutMain->addWidget(pushButtonLoad, 0, 7, 1, 1, Qt::AlignRight);
-    gLayoutMain->addWidget(sudokuTable, 1, 0, 5, 8);
-    gLayoutMain->addWidget(pushButtonSolve, 6, 3, 1, 1, Qt::AlignHCenter);
-    gLayoutMain->addWidget(pushButtonSlowSolve, 6, 4, 1, 1, Qt::AlignHCenter);
-    gLayoutMain->addWidget(pushButtonPauseSolve, 6, 5, 1, 1, Qt::AlignHCenter);
-    gLayoutMain->addWidget(checkboxShowLegend, 6, 6, 1, 1, Qt::AlignHCenter);
+    gLayoutMain->addWidget(labelImageSelect, 0, 0, 1, 1, Qt::AlignRight);
+    gLayoutMain->addWidget(comboBoxImageSelect, 0, 1, 1, 1, Qt::AlignRight);
+    gLayoutMain->addWidget(pushButtonLoadImage, 0, 7, 1, 1, Qt::AlignRight);
+
+    gLayoutMain->addWidget(labelFileSelect, 1, 0, 1, 1, Qt::AlignRight);
+    gLayoutMain->addWidget(comboBoxFileSelect, 1, 1, 1, 4, Qt::AlignLeft);
+    gLayoutMain->addWidget(labelPuzzleNo, 1, 5, 1, 1, Qt::AlignRight);
+    gLayoutMain->addWidget(spinBoxPuzzleNo, 1, 6, 1, 1, Qt::AlignLeft);
+    gLayoutMain->addWidget(pushButtonLoadFile, 1, 7, 1, 1, Qt::AlignRight);
+
+    gLayoutMain->addWidget(sudokuTable, 2, 0, 5, 8);
+
+    gLayoutMain->addWidget(pushButtonSolve, 7, 3, 1, 1, Qt::AlignHCenter);
+    gLayoutMain->addWidget(pushButtonSlowSolve, 7, 4, 1, 1, Qt::AlignHCenter);
+    gLayoutMain->addWidget(pushButtonPauseSolve, 7, 5, 1, 1, Qt::AlignHCenter);
+    gLayoutMain->addWidget(checkboxShowLegend, 7, 6, 1, 1, Qt::AlignHCenter);
 
     gLayoutMain->setContentsMargins(4,4,4,4);
 
     setLayout(gLayoutMain);
 
-    connect( pushButtonLoad, SIGNAL(clicked(bool)), this, SLOT(Read_Sudoku_Board()) );  //need to pass string but too dumb to do properly :(
+    connect( pushButtonLoadImage, SIGNAL(clicked(bool)), this, SLOT(Read_Sudoku_Board_Image()) );
+
+    connect( pushButtonLoadFile, SIGNAL(clicked(bool)), this, SLOT(Read_Sudoku_Board_File()) );  //need to pass string but too dumb to do properly :(
     connect( pushButtonSolve, SIGNAL(clicked(bool)), sudokuTable, SLOT(Solve_Board()) );
     connect( comboBoxFileSelect, SIGNAL(activated(QString)), this, SLOT(Update_Display_Puzzle_Number(QString)));
 
@@ -76,14 +97,25 @@ MainWindowSudoku::MainWindowSudoku(QWidget* _parent) :
     comboBoxFileSelect->setCurrentIndex(1);
     emit( comboBoxFileSelect->activated( comboBoxFileSelect->currentText()) );
 
+<<<<<<< HEAD
     Read_Sudoku_Board();
+=======
+    Read_Sudoku_Board_Image();
+    //Read_Sudoku_Board_File();
+    //Create_Legend_Window();
+>>>>>>> origin/master
 }
 
 
 
-void MainWindowSudoku::Read_Sudoku_Board()
+void MainWindowSudoku::Read_Sudoku_Board_File(void)
 {
     sudokuTable->Read_Board_File(sourceDir.path().toStdString()+"/"+comboBoxFileSelect->currentText().toStdString(), spinBoxPuzzleNo->value()-1);
+}
+
+void MainWindowSudoku::Read_Sudoku_Board_Image(void)
+{
+    sudokuTable->Read_Board_Image(sourceDir.path().toStdString()+"/"+comboBoxImageSelect->currentText().toStdString());
 }
 
 //decide if the puzzle number spinbox should be grayed out (file has 1 puzzle)

@@ -26,11 +26,6 @@ MainWindowSudoku::MainWindowSudoku(QWidget* _parent) :
     comboBoxFileSelect = new QComboBox(this);
     comboBoxFileSelect->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     comboBoxFileSelect->setEditable(false);
-<<<<<<< HEAD
-
-    sourceDir = QDir("../data");
-=======
->>>>>>> origin/master
     QStringList puzzleFiles = sourceDir.entryList(QStringList("*.sudoku"));
     for (const QString& file : puzzleFiles)
         comboBoxFileSelect->addItem(file);
@@ -97,13 +92,7 @@ MainWindowSudoku::MainWindowSudoku(QWidget* _parent) :
     comboBoxFileSelect->setCurrentIndex(1);
     emit( comboBoxFileSelect->activated( comboBoxFileSelect->currentText()) );
 
-<<<<<<< HEAD
-    Read_Sudoku_Board();
-=======
     Read_Sudoku_Board_Image();
-    //Read_Sudoku_Board_File();
-    //Create_Legend_Window();
->>>>>>> origin/master
 }
 
 

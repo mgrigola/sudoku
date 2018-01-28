@@ -18,7 +18,6 @@
 
 #include "TableWidgetSudoku.h"
 #include "WidgetLegendLines.h"
-//#include "SudokuReader.h"
 
 class MainWindowSudoku : public QWidget
 {

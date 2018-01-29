@@ -5,8 +5,8 @@ MainWindowSudoku::MainWindowSudoku(QWidget* _parent) :
 {    
     this->setParent(_parent);
     this->setWindowTitle("Sudoku");
-    this->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum); //this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    this->setMinimumSize(550,608);  //still can't figure out how to make the window stick to the
+    this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed); //this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    this->setMinimumSize(550,638);  //still can't figure out how to make the window stick to the
     sourceDir = QDir("../data");
 
     labelImageSelect = new QLabel("Image:");
@@ -56,7 +56,7 @@ MainWindowSudoku::MainWindowSudoku(QWidget* _parent) :
     //gLayoutMain->setSizeConstraint(QLayout::SetMinimumSize);
     //gLayoutMain->setSizeConstraint(QLayout::SetNoConstraint);
     gLayoutMain->addWidget(labelImageSelect, 0, 0, 1, 1, Qt::AlignRight);
-    gLayoutMain->addWidget(comboBoxImageSelect, 0, 1, 1, 1, Qt::AlignRight);
+    gLayoutMain->addWidget(comboBoxImageSelect, 0, 1, 1, 4, Qt::AlignLeft);
     gLayoutMain->addWidget(pushButtonLoadImage, 0, 7, 1, 1, Qt::AlignRight);
 
     gLayoutMain->addWidget(labelFileSelect, 1, 0, 1, 1, Qt::AlignRight);
@@ -104,7 +104,8 @@ void MainWindowSudoku::Read_Sudoku_Board_File(void)
 
 void MainWindowSudoku::Read_Sudoku_Board_Image(void)
 {
-    sudokuTable->Read_Board_Image(sourceDir.path().toStdString()+"/"+comboBoxImageSelect->currentText().toStdString());
+    bool showContours = true;
+    sudokuTable->Read_Board_Image(sourceDir.path().toStdString()+"/"+comboBoxImageSelect->currentText().toStdString(), showContours);
 }
 
 //decide if the puzzle number spinbox should be grayed out (file has 1 puzzle)

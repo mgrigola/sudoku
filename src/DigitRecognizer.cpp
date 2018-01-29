@@ -149,13 +149,13 @@ bool DigitRecognizer::Train_Recognizer_Image_Column(const std::string& trainPath
         }
     }
 
-    std::cout << "CV_32F: " << CV_32F << std::endl;
-    std::cout << "train type: " << trainSamples.type() << std::endl;
-    std::cout << "response type: " << responseSamples.type() << std::endl;
-    std::cout << "train cols: " << trainSamples.cols << std::endl;
-    std::cout << "response cols: " << responseSamples.cols << std::endl;
-    std::cout << "train rows: " << trainSamples.rows << std::endl;
-    std::cout << "response rows: " << responseSamples.rows << std::endl;
+//    std::cout << "CV_32F: " << CV_32F << std::endl;
+//    std::cout << "train type: " << trainSamples.type() << std::endl;
+//    std::cout << "response type: " << responseSamples.type() << std::endl;
+//    std::cout << "train cols: " << trainSamples.cols << std::endl;
+//    std::cout << "response cols: " << responseSamples.cols << std::endl;
+//    std::cout << "train rows: " << trainSamples.rows << std::endl;
+//    std::cout << "response rows: " << responseSamples.rows << std::endl;
 
 
 

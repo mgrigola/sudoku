@@ -54,7 +54,6 @@ bool SudokuReader::Read_Board_Image(SudokuBoard& inBoard, const std::string& fil
     cv::resize(rawBoardImg, sclImg, cv::Size(), scl, scl );
 
     //figure out where the sudoku board is in sclImg and how it's oriented/skewed.
-    std::vector<cv::Point2f> fourCorners;
     if (!Find_Sudoku_Board_Boundary(fourCorners))
     {
         std::cout << "Failure - could not find 4 corners of sudoku board :(" << std::endl;
@@ -328,4 +327,40 @@ bool SudokuReader::Get_Sudoku_Cell_Digit(cv::Mat& cellMat, cv::Mat& digitImg)
     //cv::Rect centeredRect((cellDim-bRect.width+1)/2, (cellDim-bRect.height+1)/2, bRect.width, bRect.height);
     //centeredMat(centeredRect) = filtContMat(bRect);
     return true;
+}
+
+
+
+void SudokuReader::Draw_Contour_Image(cv::Mat& contourImg)
+{
+    cv::cvtColor(sclImg, contourImg, cv::COLOR_GRAY2BGR );
+    for (size_t ptNo=0; ptNo<4; ++ptNo)
+    {
+        cv::line(contourImg, fourCorners[ptNo], fourCorners[(ptNo+1)%4], cv::Scalar(0,0,63+64*ptNo), 2);
+    }
+
+
+    std::vector<cv::Point2f> srcPts = {cv::Point2f(0,0), cv::Point2f(9,0), cv::Point2f(9,9), cv::Point2f(0,9)};
+    cv::Mat Q = cv::findHomography(srcPts, fourCorners);
+
+    std::vector<cv::Point2f> inputCenterPts(64);
+    for (size_t row=0; row<8; ++row)
+    {
+        for (size_t col=0; col<8; ++col)
+        {
+            inputCenterPts[8*row+col] = cv::Point2f(col+1, row+1);
+        }
+    }
+
+    std::vector<cv::Point2f> outputCenterPts(64);
+    cv::perspectiveTransform(inputCenterPts, outputCenterPts,Q);
+
+    for (size_t row=0; row<8; ++row)
+    {
+        for (size_t col=0; col<8; ++col)
+        {
+            cv::circle(contourImg, outputCenterPts[8*row+col], 5, cv::Scalar(0,255,0), -1);
+        }
+    }
+
 }

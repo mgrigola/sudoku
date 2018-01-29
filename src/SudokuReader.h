@@ -21,6 +21,7 @@ private:
     cv::Mat sclImg, bgImg, fgImg, warpImg;
     DigitRecognizer digitReader;
     uint16_t Read_File_Character(char cVal);
+    std::vector<cv::Point2f> fourCorners;
 
     bool Find_Sudoku_Board_Boundary(std::vector<cv::Point2f>& boundPts);
     bool Fix_Sudoku_Corner_Order(std::vector<cv::Point2f>& unorderedPts, std::vector<cv::Point2f>& orderedPts);
@@ -31,6 +32,7 @@ public:
     SudokuReader();
     bool Read_Board_File(SudokuBoard& inBoard, const std::string& fileName, uint16_t puzzleNo=0);
     bool Read_Board_Image(SudokuBoard& inBoard, const std::string& fileName);
+    void Draw_Contour_Image(cv::Mat& contourImg);
 };
 
 #endif

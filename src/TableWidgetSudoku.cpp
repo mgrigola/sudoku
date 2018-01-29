@@ -52,13 +52,40 @@ void TableWidgetSudoku::Read_Board_File(const std::string& fileName, uint16_t pu
     Display_Input_Board();
 }
 
+//FUCKFUVCOIUSG:UISD:IOSGL:KHSGRJBKGKJ>BGFKLJBGD
+void TableWidgetSudoku::Display_Mat(cv::Mat& img)
+{
+    QWidget* myWidget = new QWidget(static_cast<QWidget*>(this->parent()->parent()));
+    QLabel* myLabel = new QLabel(myWidget);
+    QImage myImage((uchar*)img.data, img.cols, img.rows, img.step, QImage::Format_RGB888);
+    QPixmap myPixmap = QPixmap::fromImage(myImage);
+    myLabel->setPixmap(myPixmap);
+    myLabel->setMinimumSize(32,32);
+    myLabel->setScaledContents(true);
+    QSizePolicy mySizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    myLabel->setSizePolicy(mySizePolicy);
+    myWidget->setWindowTitle("Input Image");
+    myWidget->show();
+    myWidget->raise();
+    myWidget->setFocus();
+    myWidget->activateWindow();
+}
+
 //this one does the image recognition
 //###actually maybe mainwindow should call the read functions and *this should just have like a Set_Input_Board(const SudokuBoard& inBoard)
-void TableWidgetSudoku::Read_Board_Image(const std::string& fileName)
+void TableWidgetSudoku::Read_Board_Image(const std::string& fileName, bool showProcess)
 {
     Clear_Table();
     sReader.Read_Board_Image(inputBoard, fileName);
     Display_Input_Board();
+    if (showProcess)
+    {
+        cv::Mat contourImg;
+        sReader.Draw_Contour_Image(contourImg);
+//        cv::imshow("fuck you", contourImg);
+//        cv::waitKey(1);
+        Display_Mat(contourImg);
+    }
 }
 
 

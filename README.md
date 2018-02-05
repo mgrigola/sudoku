@@ -7,11 +7,11 @@ See the /data folder for inputs. It reads the .sudoku files (see examples for fo
 Also does (not quite yet) OCR given an image of a sudoku puzzle, identifies the board and reads in the numbers.
 
 
-I'm using:
-Qt 5.7.1
-Qt Creator 4.2.1
-mingw 5.3
-OpenCV 3.1.0 - this definitely isn't compatible with opencv2.X due to the ml stuff
+I'm using: <br>
+Qt 5.7.1 <br>
+Qt Creator 4.2.1 <br>
+mingw 5.3 <br>
+OpenCV 3.1.0 <br>
 
 
 To get this running on a new machine:
